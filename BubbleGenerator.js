@@ -30,18 +30,17 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 var W = c.width;
 var H = c.height;
-var beginx = 0;
-var beginy = 0;
 var bubbleListe = [];
 var i, j;
+var interval = 0;
 
 function myFunction() {
     alert(W);
 }
 
 function draw(){
-  ctx.fillStyle = '#729ECE';
-  ctx.fillRect(beginx,beginy,c.width,c.height);
+
+  ctx.clearRect(0,0,c.width,c.height);
   for(j = 0; j < bubbleListe.length; j++ ){
     ctx.fillStyle = bubbleListe[j].col;
     ctx.beginPath();
@@ -49,15 +48,24 @@ function draw(){
     ctx.font = "20px Georgia";
     ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y);
     ctx.fill();
-    update(j)
+    if((bubbleListe[j].x + bubbleListe[j].radius + bubbleListe[j].vx > c.width ) || (bubbleListe[j].x - bubbleListe[j].radius + bubbleListe[j].vx < 0)){
+      bubbleListe[j].vx = -bubbleListe[j].vx;
+    }
+    if((bubbleListe[j].y + bubbleListe[j].radius + bubbleListe[j].vy > c.height) || (bubbleListe[j].y - bubbleListe[j].radius + bubbleListe[j].vy < 0)){
+      bubbleListe[j].vy = -bubbleListe[j].vy;
+    }
+    bubbleListe[j].x += bubbleListe[j].vx;
+    bubbleListe[j].y += bubbleListe[j].vy;
     ctx.closePath();
 
 
   }
+  //requestAnimationFrame(draw);
 
 }
 
 function init(){
+  clearInterval(interval);
   var bubbleListe = [];
   var c = document.getElementById("myCanvas");
   var ctx = c.getContext("2d");
@@ -66,7 +74,8 @@ function init(){
   var velox = 0;
   var veloy = 0;
   erzeugeBubbleMenge(10);
-  setInterval(draw, 26);
+  //requestAnimationFrame(draw);
+  interval = setInterval(draw, 26);
 
 
 }
@@ -83,7 +92,7 @@ function Bubble(x, y, col, vx, vy){
 
 function erzeugeBubbleMenge(anzahl){
   bubbleListe.splice(0, bubbleListe.length);
-  for (i = 0; i < 10; i++){
+  for (i = 0; i < anzahl; i++){
     erzeugeEinzelneBubble();
   }
 }
@@ -96,15 +105,4 @@ function erzeugeEinzelneBubble(){
   var veloy = Math.ceil(Math.random() * 100 % 3) + 1;
   var bubble = new Bubble(randomX, randomY, col, velox, veloy);
   bubbleListe.push(bubble);
-}
-
-function update(j){
-  if((bubbleListe[j].x + bubbleListe[j].radius + bubbleListe[j].vx > c.width ) || (bubbleListe[j].x - bubbleListe[j].radius + bubbleListe[j].vx < 0)){
-    bubbleListe[j].vx = -bubbleListe[j].vx;
-  }
-  if((bubbleListe[j].y + bubbleListe[j].radius + bubbleListe[j].vy > c.height) || (bubbleListe[j].y - bubbleListe[j].radius + bubbleListe[j].vy < 0)){
-    bubbleListe[j].vy = -bubbleListe[j].vy;
-  }
-  bubbleListe[j].x += bubbleListe[j].vx;
-  bubbleListe[j].y += bubbleListe[j].vy;
 }
