@@ -1,37 +1,7 @@
-/*var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-ctx.width  = 600;
-ctx.height = 400;
-
-function init(){
-
-}
-
-function erzeugeBubbleMenge(anzahl){
-
-}
-
-function erzeugeEinzelneBubble(){
-
-}
-
-function draw(){
-  x = Math.floor((Math.random() * 600) + 0);
-  y = Math.floor((Math.random() * 400) + 0);
-  radius = Math.random() * 100 % 11 + 10;
-  ctx.beginPath();
-  ctx.arc(x,y,radius,0,2*Math.PI);
-  ctx.closePath();
-  ctx.stroke();
-}
-*/
-
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-var W = c.width;
-var H = c.height;
 var bubbleListe = [];
-var i, j;
+var i, j, t;
 var interval = 0;
 
 function myFunction() {
@@ -48,19 +18,14 @@ function draw(){
     ctx.font = "20px Georgia";
     ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y);
     ctx.fill();
-    if((bubbleListe[j].x + bubbleListe[j].radius + bubbleListe[j].vx > c.width ) || (bubbleListe[j].x - bubbleListe[j].radius + bubbleListe[j].vx < 0)){
-      bubbleListe[j].vx = -bubbleListe[j].vx;
-    }
-    if((bubbleListe[j].y + bubbleListe[j].radius + bubbleListe[j].vy > c.height) || (bubbleListe[j].y - bubbleListe[j].radius + bubbleListe[j].vy < 0)){
-      bubbleListe[j].vy = -bubbleListe[j].vy;
-    }
+    update(j)
     bubbleListe[j].x += bubbleListe[j].vx;
     bubbleListe[j].y += bubbleListe[j].vy;
+
     ctx.closePath();
 
 
   }
-  //requestAnimationFrame(draw);
 
 }
 
@@ -74,7 +39,6 @@ function init(){
   var velox = 0;
   var veloy = 0;
   erzeugeBubbleMenge(10);
-  //requestAnimationFrame(draw);
   interval = setInterval(draw, 26);
 
 
@@ -98,11 +62,28 @@ function erzeugeBubbleMenge(anzahl){
 }
 
 function erzeugeEinzelneBubble(){
-  var randomX = Math.floor((Math.random() * 600) + 0);
-  var randomY = Math.floor((Math.random() * 400) + 0);
+  var randomX = Math.floor((Math.random() * 300) + 100);
+  var randomY = Math.floor((Math.random() * 200) + 100);
   var col = '#'+Math.floor(Math.random()*16777215).toString(16);
-  var velox = Math.ceil(Math.random() * 100 % 3) + 1;
-  var veloy = Math.ceil(Math.random() * 100 % 3) + 1;
+  var velox = Math.round(Math.random()) * 4 - 2;
+  var veloy = Math.round(Math.random()) * 4 - 2;
   var bubble = new Bubble(randomX, randomY, col, velox, veloy);
   bubbleListe.push(bubble);
+}
+
+function update(j){
+  var bubbleRborder = bubbleListe[j].x + bubbleListe[j].radius + bubbleListe[j].vx;
+  var bubbleLborder = bubbleListe[j].x - bubbleListe[j].radius + bubbleListe[j].vx;
+
+  var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius + bubbleListe[j].vy;
+  var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius + bubbleListe[j].vy;
+
+  if((bubbleRborder > c.width ) || (bubbleLborder < 0)){
+    bubbleListe[j].vx = -bubbleListe[j].vx;
+  }
+  if((bubbleDborder > c.height) || (bubbleUborder < 0)){
+    bubbleListe[j].vy = -bubbleListe[j].vy;
+  }
+
+
 }
