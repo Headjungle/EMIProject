@@ -14,11 +14,18 @@ input {
 #myCanvas {
   background-color: #729ECE;
   float:auto;
+<<<<<<< HEAD
 
 }
 
 #header {
     width:723px;
+=======
+}
+
+#header {
+    width:713px;
+>>>>>>> 690c174d8bda3949f95653424ec6fb11ae93be78
     background-color:black;
     color:white;
     text-align:center;
@@ -29,11 +36,18 @@ input {
 
     line-height:40px;
     background-color:#eeeeee;
+<<<<<<< HEAD
     height:450px;
     width:100px;
     float:left;
     padding:10px;
     padding-bottom: 2px;
+=======
+    height:420px;
+    width:100px;
+    float:left;
+    padding:30px;
+>>>>>>> 690c174d8bda3949f95653424ec6fb11ae93be78
 }
 #section {
     width:350px;
@@ -42,7 +56,11 @@ input {
 
 }
 #footer {
+<<<<<<< HEAD
     width:285px;
+=======
+    width:275px;
+>>>>>>> 690c174d8bda3949f95653424ec6fb11ae93be78
     background-color:black;
     color:white;
     clear:both;
