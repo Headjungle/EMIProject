@@ -14,18 +14,29 @@
       </div>
 
       <div class="sansserif" id="nav">
-        <button type="button" class="padding" onclick="init()">Starten</button>
+        <button type="button" class="padding" onclick="init(10)">Starten</button>
         <button type="button" class="padding" onclick="">Beschreibung</button>
-        <button type="button" class="padding" onclick="">Einstellungen</button>
+        <button type="button" class="padding" onclick="settings()">Einstellungen</button>
 
       </div>
 
       <div id="section">
         <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;">  </canvas>
         <script src="BubbleGenerator.js"></script>
+        <div style="visibility:hidden" id='settings'>
+          <form>
+            <div>
+              <label for="bubnumber">Anzahl der Bubbles:</label>
+              <input id="bubnumber" type="number" min="0" step="1" value="10"> </label>
+            </div>
+            <div class="button">
+              <button type="button" onclick="bubblenumber()" >Bestätigen</button>
+            </div>
+          </form>
+        </div>
       </div>
 
-      <div hidden id="settsection">This is a test</div>
+
 
       <div class="sansserif" id="footer">
         Thanh-Tien Tenh Cong &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4503465

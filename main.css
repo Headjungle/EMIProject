@@ -6,6 +6,10 @@
   font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
+input {
+	width: 3.5em;
+}
+
 
 #myCanvas {
   background-color: #729ECE;
