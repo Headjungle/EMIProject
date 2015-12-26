@@ -1,0 +1,61 @@
+.header{
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+.sansserif{
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+input {
+	width: 3.5em;
+}
+
+
+#myCanvas {
+  background-color: #729ECE;
+  float:auto;
+
+}
+
+#header {
+    width:723px;
+    background-color:black;
+    color:white;
+    text-align:center;
+    font-size: 115%;
+    padding:5px;
+}
+#nav {
+
+    line-height:40px;
+    background-color:#eeeeee;
+    height:450px;
+    width:100px;
+    float:left;
+    padding:10px;
+    padding-bottom: 2px;
+}
+#section {
+    width:350px;
+    float:left;
+    padding: 10px;
+
+}
+#footer {
+    width:285px;
+    background-color:black;
+    color:white;
+    clear:both;
+    padding:5px;
+    padding-left: 443px;
+}
+
+.padding {
+  padding-left: 4%;
+}
+
+#wrapper {
+    margin-left:auto;
+    margin-right:auto;
+    width:auto;
+}
