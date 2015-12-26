@@ -1,5 +1,6 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
+
 var bubbleListe = [];
 var i, j;
 var interval = 0;
@@ -10,13 +11,16 @@ function draw(){
     ctx.fillStyle = bubbleListe[j].col;
     ctx.beginPath();
     ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
-    ctx.font = "20px Georgia";
-    ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y);
     ctx.fill();
     update(j);
     bubbleListe[j].x += bubbleListe[j].vx;
     bubbleListe[j].y += bubbleListe[j].vy;
     ctx.closePath();
+    ctx.fillStyle = 'black';
+    ctx.beginPath();
+    ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y)
+    ctx.closePath;
+    ctx.fill();
   }
 }
 
@@ -24,6 +28,7 @@ function init(num){
   clearInterval(interval);
   erzeugeBubbleMenge(num);
   interval = setInterval(draw, 26);
+  c.addEventListener("click", beiClick, false);
 }
 
 function Bubble(x, y, col, vx, vy, w){
@@ -46,7 +51,7 @@ function erzeugeBubbleMenge(anzahl){
 function erzeugeEinzelneBubble(i){
   var randomX = Math.floor((Math.random() * 300) + 100);
   var randomY = Math.floor((Math.random() * 200) + 100);
-  var col = '#'+Math.floor(Math.random()*16777215).toString(16);
+  var col = '#D69620';
   var velox = Math.round(Math.random()) * 4 - 2;
   var veloy = Math.round(Math.random()) * 4 - 2;
   var wert = i+1;
@@ -76,6 +81,19 @@ function settings(){
   else{
     document.getElementById('settings').style.visibility = 'hidden';
   }
+}
+
+function beiClick(event){
+  var x = event.x;
+  var y = event.y;
+
+  x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+  y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+
+  x -= c.offsetLeft;
+  y -= c.offsetTop;
+
+  //alert("x:" + x + " y:" + y);
 }
 
 function bubblenumber(){
