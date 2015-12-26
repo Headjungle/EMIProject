@@ -13,7 +13,7 @@ input {
 
 #myCanvas {
   background-color: #729ECE;
-  float:left;
+  float:auto;
 }
 
 #header {
@@ -31,7 +31,7 @@ input {
     height:420px;
     width:100px;
     float:left;
-    padding:5px;
+    padding:30px;
 }
 #section {
     width:350px;

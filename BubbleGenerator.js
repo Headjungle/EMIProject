@@ -2,8 +2,18 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
 var bubbleListe = [];
-var i, j;
+var i, j, t;
 var interval = 0;
+
+/*function box(){
+  var op1, op2;
+  op1 = 1 < 4;
+  op2 = 2 < 3;
+  if (op1 && op2 == true){
+    alert("Hello");
+
+  }
+}*/
 
 function draw(){
   ctx.clearRect(0,0,c.width,c.height);
@@ -12,9 +22,23 @@ function draw(){
     ctx.beginPath();
     ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
     ctx.fill();
-    update(j);
     bubbleListe[j].x += bubbleListe[j].vx;
     bubbleListe[j].y += bubbleListe[j].vy;
+    update(j);
+    /*for(t = 0; t < bubbleListe.length; t++){
+      if(j != t){
+        var h, d;
+        h = Math.hypot(Math.abs(bubbleListe[j].x-bubbleListe[t].x), Math.abs(bubbleListe[j].y-bubbleListe[t].y));
+        d = h - bubbleListe[j].radius - bubbleListe[t].radius;
+        if(d <= 0){
+          bubbleListe[j].vx = -vx2;
+          bubbleListe[t].vx = -vx1;
+          bubbleListe[j].vy = -vy2;
+          bubbleListe[t].vy = -vy1;
+        }
+      }
+    }*/
+
     ctx.closePath();
     ctx.fillStyle = 'black';
     ctx.beginPath();
@@ -60,18 +84,23 @@ function erzeugeEinzelneBubble(i){
 }
 
 function update(j){
-  var bubbleRborder = bubbleListe[j].x + bubbleListe[j].radius + bubbleListe[j].vx;
-  var bubbleLborder = bubbleListe[j].x - bubbleListe[j].radius + bubbleListe[j].vx;
+  var bubbleRborder = bubbleListe[j].x + bubbleListe[j].radius;
+  var bubbleLborder = bubbleListe[j].x - bubbleListe[j].radius;
 
-  var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius + bubbleListe[j].vy;
-  var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius + bubbleListe[j].vy;
+  var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius;
+  var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius;
 
-  if((bubbleRborder > c.width ) || (bubbleLborder < 0)){
+  if((bubbleRborder > c.width ) || (bubbleLborder < 1)){
     bubbleListe[j].vx = -bubbleListe[j].vx;
-  }
-  if((bubbleDborder > c.height) || (bubbleUborder < 0)){
     bubbleListe[j].vy = -bubbleListe[j].vy;
+
   }
+  if((bubbleDborder > c.height) || (bubbleUborder < 1)){
+    bubbleListe[j].vy = -bubbleListe[j].vy;
+    bubbleListe[j].vx = -bubbleListe[j].vx;
+
+  }
+
 }
 
 function settings(){
@@ -92,6 +121,16 @@ function beiClick(event){
 
   x -= c.offsetLeft;
   y -= c.offsetTop;
+
+  for(j = 0; j < bubbleListe.length; j++ ){
+    var hypo = Math.hypot(Math.abs(x-bubbleListe[j].x), Math.abs(y-bubbleListe[j].y));
+    var score = 0;
+    if(hypo <= bubbleListe[j].radius){
+      bubbleListe.splice(j, 1);
+      score = score + j;
+    }
+
+  }
 
   //alert("x:" + x + " y:" + y);
 }
