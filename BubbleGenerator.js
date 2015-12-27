@@ -1,109 +1,55 @@
+/*things to do:
+1.prevent the blind trust in the user input
+2.add function description
+3.add comments and popups for getting or losing points*/
+
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-
 var bubbleListe = [];
 var wertListe = [];
-var i, j;
+var i, j, s, start;
 var interval = 0;
 var score = 0;
-var start = 0;
 
-/*function box(){
-  var op1;
-  op1 = compare();
-  alert(op1);
-}*/
-
-function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
-  for(j = 0; j < bubbleListe.length; j++ ){
-    ctx.fillStyle = bubbleListe[j].col;
-    ctx.beginPath();
-    ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
-    ctx.fill();
-    bubbleListe[j].x += bubbleListe[j].vx;
-    bubbleListe[j].y += bubbleListe[j].vy;
-    update(j);
-    /*for(t = 0; t < bubbleListe.length; t++){
-      if(j != t){
-        var h, d;
-        h = Math.hypot(Math.abs(bubbleListe[j].x-bubbleListe[t].x), Math.abs(bubbleListe[j].y-bubbleListe[t].y));
-        d = h - bubbleListe[j].radius - bubbleListe[t].radius;
-        if(d <= 0){
-          bubbleListe[j].vx = -bubbleListe[j].vx;
-          bubbleListe[t].vx = -bubbleListe[t].vx;
-          bubbleListe[j].vy = -bubbleListe[j].vy;
-          bubbleListe[t].vy = -bubbleListe[t].vy;
-        }
-      }
-    }*/
-    ctx.closePath();
-    ctx.fillStyle = 'black';
-    ctx.beginPath();
-    ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y)
-    ctx.closePath;
-    ctx.fill();
-  }
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
 }
-function init(num){
-  var s = new Date();
-  var start = s.getTime();
-  clearInterval(interval);
-  document.getElementById('begin').innerHTML = 'Neustarten';
-  score = 0;
+
+function gamelogic(j){
+  if(bubbleListe[j].wert == wertListe.min()){
+    score = score + bubbleListe[j].wert;
+  }else{
+    score = score - bubbleListe[j].wert;
+  }
+
+  bubbleListe.splice(j, 1);
+  wertListe.splice(j, 1);
+
+  if(score < 0){
+    document.getElementById('sco').style.color = 'red';
+  }else{
+      document.getElementById('sco').style.color = 'black';
+  }
+  if(score > 0){
+    document.getElementById('sco').style.color = 'green';
+  }
+
   document.getElementById('sco').innerHTML = score.toString();
-  document.getElementById('settings').style.visibility = 'hidden';
-  erzeugeBubbleMenge(num);
-  interval = setInterval(draw, 26);
-  c.addEventListener("click", beiClick, false);
-}
-
-function Bubble(x, y, col, vx, vy, w){
-  this.x = x;
-  this.y = y;
-  this.vx = vx
-  this.vy = vy
-  this.col = col;
-  this.radius = Math.random() * 100 % 11 + 10;
-  this.wert = w;
-}
-
-function erzeugeBubbleMenge(anzahl){
-  bubbleListe.splice(0, bubbleListe.length);
-  for (i = 0; i < anzahl; i++){
-    erzeugeEinzelneBubble(i);
-    wertListe.push(bubbleListe[i].wert);
+  if (bubbleListe == undefined || bubbleListe.length == 0) {
+    endofgame();
   }
 }
 
-function erzeugeEinzelneBubble(i){
-  var randomX = Math.floor((Math.random() * 300) + 100);
-  var randomY = Math.floor((Math.random() * 200) + 100);
-  var col = '#D69620';
-  var velox = Math.round(Math.random()) * 4 - 2;
-  var veloy = Math.round(Math.random()) * 4 - 2;
-  var wert = i+1;
-  var bubble = new Bubble(randomX, randomY, col, velox, veloy, wert);
-  bubbleListe.push(bubble);
+function endofgame(){
+  var n = new Date();
+  var end = n.getTime();
+  var time = (end - start);
+  var min = parseInt(time/60000);
+  var sec = Math.round((time/1000-min*60)* 100) / 100;
+
+  document.getElementById('tim').innerHTML = min.toString()+ 'min ' +sec.toString() + 's';
 }
 
-function update(j){
-  var bubbleRborder = bubbleListe[j].x + bubbleListe[j].radius;
-  var bubbleLborder = bubbleListe[j].x - bubbleListe[j].radius;
-
-  var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius;
-  var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius;
-
-  if((bubbleRborder > c.width ) || (bubbleLborder < -1)){
-    bubbleListe[j].vx = -bubbleListe[j].vx;
-    bubbleListe[j].vy = (Math.round(Math.random()) * 2 - 1)*bubbleListe[j].vy;
-
-  }
-  if((bubbleDborder > c.height) || (bubbleUborder < -1)){
-    bubbleListe[j].vy = -bubbleListe[j].vy;
-    bubbleListe[j].vx = (Math.round(Math.random()) * 2 - 1)*bubbleListe[j].vx;
-  }
-}
 
 function settings(){
   if(document.getElementById('settings').style.visibility == 'hidden'){
@@ -133,46 +79,97 @@ function beiClick(event){
   }
 }
 
+function Bubble(x, y, col){
+  this.col = col;
+  this.radius = Math.random() * 100 % 11 + 10;
+  this.wert = Math.floor(Math.random() * 100 % 10) + 1;
 
+  if (x + this.radius > c.width)
+    x -= this.radius;
+  if (y + this.radius > c.height)
+    y -= this.radius;
+  if (x - this.radius < 0)
+    x += this.radius;
+  if (y - this.radius < 0)
+    y += this.radius;
 
-function gamelogic(j){
-  if(bubbleListe[j].wert == wertListe.min()){
-    score = score + bubbleListe[j].wert;
-    bubbleListe.splice(j, 1);
-    wertListe.splice(j, 1);
-  }else{
-    score = score - bubbleListe[j].wert;
-  }
+  this.x = x;
+  this.y = y;
+  this.vx = (Math.random() * 2) + 1;
+  this.vy = (Math.random() * 2) + 1;
+}
 
-  if(score < 0){
-    document.getElementById('sco').style.color = 'red';
-  }else{
-      document.getElementById('sco').style.color = 'black';
-  }
-  if(score > 0){
-    document.getElementById('sco').style.color = 'green';
-  }
-
-  document.getElementById('sco').innerHTML = score.toString();
-  if (bubbleListe == undefined || bubbleListe.length == 0) {
-    endofgame();
+function erzeugeBubbleMenge(anzahl){
+  bubbleListe.splice(0, bubbleListe.length);
+  wertListe.splice(0, wertListe.length);
+  for (i = 0; i < anzahl; i++){
+    erzeugeEinzelneBubble(i);
+    wertListe.push(bubbleListe[i].wert);
   }
 }
 
-function endofgame(){
-  var n = new Date();
-  var end = n.getTime();
-  var time = (end - start);
-
-  document.getElementById('tim').innerHTML = time.toString() + "sec";
-
+function erzeugeEinzelneBubble(i){
+  var randomX = Math.floor((Math.random() * 600) + 1);
+  var randomY = Math.floor((Math.random() * 400) + 1);
+  var col = '#D69620';
+  var bubble = new Bubble(randomX, randomY, col);
+  bubbleListe.push(bubble);
 }
 
-Array.prototype.min = function() {
-  return Math.min.apply(null, this);
-};
+function update(j){
+  var bubbleRborder = bubbleListe[j].x + bubbleListe[j].radius;
+  var bubbleLborder = bubbleListe[j].x - bubbleListe[j].radius;
+
+  var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius;
+  var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius;
+
+  if((bubbleRborder > c.width ) || (bubbleLborder < 0)){
+    bubbleListe[j].vx = -bubbleListe[j].vx;
+
+  }
+  if((bubbleDborder > c.height) || (bubbleUborder < 0)){
+    bubbleListe[j].vy = -bubbleListe[j].vy;
+  }
+}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  for(j = 0; j < bubbleListe.length; j++ ){
+    ctx.fillStyle = bubbleListe[j].col;
+    ctx.beginPath();
+    ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
+    ctx.fill();
+
+    bubbleListe[j].x += bubzbleListe[j].vx;
+    bubbleListe[j].y += bubbleListe[j].vy;
+    update(j);
+
+    ctx.closePath();
+
+    ctx.fillStyle = 'black';
+    ctx.beginPath();
+    ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y)
+    ctx.closePath;
+    ctx.fill();
+  }
+}
 
 function bubblenumber(){
   var number = parseInt(document.getElementById('bubnumber').value);
   init(number);
+}
+
+function init(num){
+  s = new Date();
+  start = s.getTime();
+  clearInterval(interval);
+  document.getElementById('begin').innerHTML = 'Neustarten';
+  score = 0;
+  document.getElementById('sco').innerHTML = score.toString();
+  document.getElementById('tim').innerHTML = 'is a flat Circle';
+  document.getElementById('sco').style.color = 'black';
+  document.getElementById('settings').style.visibility = 'hidden';
+  erzeugeBubbleMenge(num);
+  interval = setInterval(draw, 26);
+  c.addEventListener("click", beiClick, false);
 }

@@ -10,6 +10,7 @@ input {
 	width: 3.5em;
 }
 
+
 #sco {
   text-align:center;
 }
@@ -19,13 +20,14 @@ input {
 }
 
 #myCanvas {
+  margin-top:18px;
   background-color: #729ECE;
   float:auto;
 
 }
 
 #header {
-    width:723px;
+    width:733px;
     background-color:black;
     color:white;
     text-align:center;
@@ -49,12 +51,12 @@ input {
 
 }
 #footer {
-    width:285px;
+    width:255px;
     background-color:black;
     color:white;
     clear:both;
     padding:5px;
-    padding-left: 443px;
+    padding-left: 483px;
 }
 
 .padding {
@@ -65,4 +67,8 @@ input {
     margin-left:auto;
     margin-right:auto;
     width:auto;
+}
+
+#ver {
+  font-size: 70%;
 }
