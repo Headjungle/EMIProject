@@ -140,7 +140,7 @@ function draw(){
     ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
     ctx.fill();
 
-    bubbleListe[j].x += bubzbleListe[j].vx;
+    bubbleListe[j].x += bubbleListe[j].vx;
     bubbleListe[j].y += bubbleListe[j].vy;
     update(j);
 
