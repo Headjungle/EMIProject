@@ -44,7 +44,6 @@ function draw(){
     ctx.fill();
   }
 }
-
 function init(num){
   clearInterval(interval);
   document.getElementById('begin').innerHTML = 'Neustarten';
@@ -126,18 +125,32 @@ function beiClick(event){
   for(j = 0; j < bubbleListe.length; j++){
     var hypo = Math.hypot(Math.abs(x-bubbleListe[j].x), Math.abs(y-bubbleListe[j].y));
     if(hypo <= bubbleListe[j].radius){
-
-      if(bubbleListe[j].wert == wertListe.min()){
-        score = score + bubbleListe[j].wert;
-      }else{
-        score = score - bubbleListe[j].wert;
-      }
-      
-      bubbleListe.splice(j, 1);
-      wertListe.splice(j, 1);
-      document.getElementById('sco').innerHTML = score.toString();
-      }
+      gamelogic(j);
     }
+  }
+}
+
+function endofgame{
+
+}
+
+function gamelogic(j){
+  if(bubbleListe[j].wert == wertListe.min()){
+    score = score + bubbleListe[j].wert;
+  }else{
+    score = score - bubbleListe[j].wert;
+  }
+  if(score < 0){
+    document.getElementById('sco').style.color = 'red';
+  }else{
+      document.getElementById('sco').style.color = 'black';
+  }
+  if(score > 0){
+    document.getElementById('sco').style.color = 'green';
+  }
+  bubbleListe.splice(j, 1);
+  wertListe.splice(j, 1);
+  document.getElementById('sco').innerHTML = score.toString();
 }
 
 Array.prototype.min = function() {
