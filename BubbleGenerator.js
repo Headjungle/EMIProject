@@ -6,6 +6,7 @@ var wertListe = [];
 var i, j;
 var interval = 0;
 var score = 0;
+var start = 0;
 
 /*function box(){
   var op1;
@@ -29,10 +30,10 @@ function draw(){
         h = Math.hypot(Math.abs(bubbleListe[j].x-bubbleListe[t].x), Math.abs(bubbleListe[j].y-bubbleListe[t].y));
         d = h - bubbleListe[j].radius - bubbleListe[t].radius;
         if(d <= 0){
-          bubbleListe[j].vx = -vx2;
-          bubbleListe[t].vx = -vx1;
-          bubbleListe[j].vy = -vy2;
-          bubbleListe[t].vy = -vy1;
+          bubbleListe[j].vx = -bubbleListe[j].vx;
+          bubbleListe[t].vx = -bubbleListe[t].vx;
+          bubbleListe[j].vy = -bubbleListe[j].vy;
+          bubbleListe[t].vy = -bubbleListe[t].vy;
         }
       }
     }*/
@@ -45,6 +46,8 @@ function draw(){
   }
 }
 function init(num){
+  var s = new Date();
+  var start = s.getTime();
   clearInterval(interval);
   document.getElementById('begin').innerHTML = 'Neustarten';
   score = 0;
@@ -91,12 +94,12 @@ function update(j){
   var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius;
   var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius;
 
-  if((bubbleRborder > c.width ) || (bubbleLborder < 1)){
+  if((bubbleRborder > c.width ) || (bubbleLborder < -1)){
     bubbleListe[j].vx = -bubbleListe[j].vx;
     bubbleListe[j].vy = (Math.round(Math.random()) * 2 - 1)*bubbleListe[j].vy;
 
   }
-  if((bubbleDborder > c.height) || (bubbleUborder < 1)){
+  if((bubbleDborder > c.height) || (bubbleUborder < -1)){
     bubbleListe[j].vy = -bubbleListe[j].vy;
     bubbleListe[j].vx = (Math.round(Math.random()) * 2 - 1)*bubbleListe[j].vx;
   }
@@ -130,16 +133,17 @@ function beiClick(event){
   }
 }
 
-function endofgame{
 
-}
 
 function gamelogic(j){
   if(bubbleListe[j].wert == wertListe.min()){
     score = score + bubbleListe[j].wert;
+    bubbleListe.splice(j, 1);
+    wertListe.splice(j, 1);
   }else{
     score = score - bubbleListe[j].wert;
   }
+
   if(score < 0){
     document.getElementById('sco').style.color = 'red';
   }else{
@@ -148,9 +152,20 @@ function gamelogic(j){
   if(score > 0){
     document.getElementById('sco').style.color = 'green';
   }
-  bubbleListe.splice(j, 1);
-  wertListe.splice(j, 1);
+
   document.getElementById('sco').innerHTML = score.toString();
+  if (bubbleListe == undefined || bubbleListe.length == 0) {
+    endofgame();
+  }
+}
+
+function endofgame(){
+  var n = new Date();
+  var end = n.getTime();
+  var time = (end - start);
+
+  document.getElementById('tim').innerHTML = time.toString() + "sec";
+
 }
 
 Array.prototype.min = function() {
@@ -158,7 +173,6 @@ Array.prototype.min = function() {
 };
 
 function bubblenumber(){
-  document.getElementById('settings').style.visibility = 'hidden';
   var number = parseInt(document.getElementById('bubnumber').value);
   init(number);
 }
