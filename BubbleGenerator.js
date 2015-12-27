@@ -2,7 +2,8 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
 var bubbleListe = [];
-var i, j, t;
+var wertListe = [];
+var i, j;
 var interval = 0;
 var score = 0;
 
@@ -46,8 +47,9 @@ function draw(){
 
 function init(num){
   clearInterval(interval);
+  document.getElementById('begin').innerHTML = 'Neustarten';
   score = 0;
-  document.getElementById('sco').innerHTML = 0;
+  document.getElementById('sco').innerHTML = score.toString();
   document.getElementById('settings').style.visibility = 'hidden';
   erzeugeBubbleMenge(num);
   interval = setInterval(draw, 26);
@@ -68,6 +70,7 @@ function erzeugeBubbleMenge(anzahl){
   bubbleListe.splice(0, bubbleListe.length);
   for (i = 0; i < anzahl; i++){
     erzeugeEinzelneBubble(i);
+    wertListe.push(bubbleListe[i].wert);
   }
 }
 
@@ -120,31 +123,26 @@ function beiClick(event){
   x -= c.offsetLeft;
   y -= c.offsetTop;
 
-  var leng = bubbleListe.length;
   for(j = 0; j < bubbleListe.length; j++){
     var hypo = Math.hypot(Math.abs(x-bubbleListe[j].x), Math.abs(y-bubbleListe[j].y));
     if(hypo <= bubbleListe[j].radius){
-      var point = bubbleListe[j].wert;
-      score = score + compare(leng, j)*point;
+
+      if(bubbleListe[j].wert == wertListe.min()){
+        score = score + bubbleListe[j].wert;
+      }else{
+        score = score - bubbleListe[j].wert;
+      }
+      
       bubbleListe.splice(j, 1);
+      wertListe.splice(j, 1);
       document.getElementById('sco').innerHTML = score.toString();
       }
     }
 }
 
-function compare(leng, j){
-  var a;
-  for(i = (leng-1); i >= 0; i--){
-    if(bubbleListe[j].wert <= bubbleListe[i].wert){
-      a = 1;
-    }
-    else
-    {
-      a = -1;
-    }
-  }
-  return a;
-}
+Array.prototype.min = function() {
+  return Math.min.apply(null, this);
+};
 
 function bubblenumber(){
   document.getElementById('settings').style.visibility = 'hidden';

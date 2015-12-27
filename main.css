@@ -10,6 +10,13 @@ input {
 	width: 3.5em;
 }
 
+#sco {
+  text-align:center;
+}
+
+#tim {
+  text-align:center;
+}
 
 #myCanvas {
   background-color: #729ECE;
@@ -30,7 +37,7 @@ input {
     line-height:40px;
     background-color:#eeeeee;
     height:450px;
-    width:100px;
+    width:110px;
     float:left;
     padding:10px;
     padding-bottom: 2px;
