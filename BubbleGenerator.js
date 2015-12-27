@@ -1,8 +1,10 @@
-/*things to do:
+/*
+things to do:
 1.prevent the blind trust in the user input
 2.add function description
-3.add comments and popups for getting or losing points*/
-
+3.add comments and popups for getting or losing points
+4.add more shapes to bubbles(squares, bees, flowers, circles(done))
+*/
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 var bubbleListe = [];
@@ -15,49 +17,37 @@ Array.prototype.min = function() {
   return Math.min.apply(null, this);
 }
 
-function gamelogic(j){
-  if(bubbleListe[j].wert == wertListe.min()){
-    score = score + bubbleListe[j].wert;
-  }else{
-    score = score - bubbleListe[j].wert;
-  }
-
-  bubbleListe.splice(j, 1);
-  wertListe.splice(j, 1);
-
-  if(score < 0){
-    document.getElementById('sco').style.color = 'red';
-  }else{
-      document.getElementById('sco').style.color = 'black';
-  }
-  if(score > 0){
-    document.getElementById('sco').style.color = 'green';
-  }
-
-  document.getElementById('sco').innerHTML = score.toString();
-  if (bubbleListe == undefined || bubbleListe.length == 0) {
-    endofgame();
-  }
-}
-
 function endofgame(){
   var n = new Date();
   var end = n.getTime();
-  var time = (end - start);
+  var time = end - start;
   var min = parseInt(time/60000);
   var sec = Math.round((time/1000-min*60)* 100) / 100;
 
   document.getElementById('tim').innerHTML = min.toString()+ 'min ' +sec.toString() + 's';
 }
 
+function gamelogic(j){
+  if(bubbleListe[j].wert == wertListe.min()){
+    score += bubbleListe[j].wert;
+    bubbleListe.splice(j, 1);
+    wertListe.splice(j, 1);
+  }else{
+    score -= bubbleListe[j].wert;
+  }
 
-function settings(){
-  if(document.getElementById('settings').style.visibility == 'hidden'){
-    document.getElementById('settings').style.visibility = 'visible';
+  if(score < 0){
+    document.getElementById('sco').style.color = 'red';
+  }else{
+      document.getElementById('sco').style.color = 'black';
   }
-  else{
-    document.getElementById('settings').style.visibility = 'hidden';
-  }
+
+  if(score > 0)
+    document.getElementById('sco').style.color = 'green';
+
+  document.getElementById('sco').innerHTML = score.toString();
+  if (bubbleListe == undefined || bubbleListe.length == 0)
+    endofgame();
 }
 
 function beiClick(event){
@@ -73,9 +63,8 @@ function beiClick(event){
 
   for(j = 0; j < bubbleListe.length; j++){
     var hypo = Math.hypot(Math.abs(x-bubbleListe[j].x), Math.abs(y-bubbleListe[j].y));
-    if(hypo <= bubbleListe[j].radius){
+    if(hypo <= bubbleListe[j].radius)
       gamelogic(j);
-    }
   }
 }
 
@@ -99,23 +88,6 @@ function Bubble(x, y, col){
   this.vy = (Math.random() * 2) + 1;
 }
 
-function erzeugeBubbleMenge(anzahl){
-  bubbleListe.splice(0, bubbleListe.length);
-  wertListe.splice(0, wertListe.length);
-  for (i = 0; i < anzahl; i++){
-    erzeugeEinzelneBubble(i);
-    wertListe.push(bubbleListe[i].wert);
-  }
-}
-
-function erzeugeEinzelneBubble(i){
-  var randomX = Math.floor((Math.random() * 600) + 1);
-  var randomY = Math.floor((Math.random() * 400) + 1);
-  var col = '#D69620';
-  var bubble = new Bubble(randomX, randomY, col);
-  bubbleListe.push(bubble);
-}
-
 function update(j){
   var bubbleRborder = bubbleListe[j].x + bubbleListe[j].radius;
   var bubbleLborder = bubbleListe[j].x - bubbleListe[j].radius;
@@ -123,13 +95,10 @@ function update(j){
   var bubbleDborder =  bubbleListe[j].y + bubbleListe[j].radius;
   var bubbleUborder =  bubbleListe[j].y - bubbleListe[j].radius;
 
-  if((bubbleRborder > c.width ) || (bubbleLborder < 0)){
+  if((bubbleRborder > c.width ) || (bubbleLborder < 0))
     bubbleListe[j].vx = -bubbleListe[j].vx;
-
-  }
-  if((bubbleDborder > c.height) || (bubbleUborder < 0)){
+  if((bubbleDborder > c.height) || (bubbleUborder < 0))
     bubbleListe[j].vy = -bubbleListe[j].vy;
-  }
 }
 
 function draw(){
@@ -154,22 +123,50 @@ function draw(){
   }
 }
 
-function bubblenumber(){
-  var number = parseInt(document.getElementById('bubnumber').value);
-  init(number);
+function erzeugeEinzelneBubble(){
+  var randomX = Math.floor((Math.random() * 600) + 1);
+  var randomY = Math.floor((Math.random() * 400) + 1);
+  var col = '#D69620';
+  var bubble = new Bubble(randomX, randomY, col);
+  bubbleListe.push(bubble);
+}
+
+function erzeugeBubbleMenge(anzahl){
+  bubbleListe.splice(0, bubbleListe.length);
+  wertListe.splice(0, wertListe.length);
+  for (i = 0; i < anzahl; i++){
+    erzeugeEinzelneBubble();
+    wertListe.push(bubbleListe[i].wert);
+  }
 }
 
 function init(num){
   s = new Date();
   start = s.getTime();
   clearInterval(interval);
+
   document.getElementById('begin').innerHTML = 'Neustarten';
   score = 0;
   document.getElementById('sco').innerHTML = score.toString();
   document.getElementById('tim').innerHTML = 'is a flat Circle';
   document.getElementById('sco').style.color = 'black';
   document.getElementById('settings').style.visibility = 'hidden';
+
   erzeugeBubbleMenge(num);
   interval = setInterval(draw, 26);
   c.addEventListener("click", beiClick, false);
+}
+
+function bubblenumber(){
+  var number = parseInt(document.getElementById('bubnumber').value);
+  init(number);
+}
+
+function settings(){
+  if(document.getElementById('settings').style.visibility == 'hidden'){
+    document.getElementById('settings').style.visibility = 'visible';
+  }
+  else{
+    document.getElementById('settings').style.visibility = 'hidden';
+  }
 }

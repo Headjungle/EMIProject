@@ -72,3 +72,9 @@ input {
 #ver {
   font-size: 70%;
 }
+
+#main {
+  margin-left:auto;
+  margin-right: auto;
+  position: absolute;
+}
