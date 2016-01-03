@@ -87,7 +87,7 @@ input {
 }
 
 #desc {
-  position: absolute; 
+  position: absolute;
   display:inline-block;
   font-size: 80%;
   z-index: 1;
