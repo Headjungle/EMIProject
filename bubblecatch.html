@@ -16,7 +16,7 @@
       </div>
 
         <div class="sansserif" id="nav">
-          <button id='begin' type="button" class="padding" onclick="init(10)">Starten</button>
+          <button id='begin' type="button" class="padding" onclick="bubblenumber()">Starten</button>
           <button type="button" class="padding" onclick="description()">Beschreibung</button>
           <button type="button" class="padding" onclick="settings()">Einstellungen</button>
 
@@ -46,7 +46,30 @@
         </div>
 
         <div id="section">
-          <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;">  </canvas>
+          <canvas id="myCanvas" width="600" height="400" style="border:1px solid #000000;">   </canvas>
+
+          <span style="visibility:hidden" id="desc"> <!-- span is a grouping tag for design purposes-->
+            <p>Willkommen in Bubblecatch!</p>
+
+            <p>Klick die Bubbles nach aufsteigender Nummer weg, alter! Schaffst du das, bekommst du Punkte in H&ouml;he der Nummer. Wenn du eine falsche Bubble erwischst, wirst du mit Minuspunkten in der H&ouml;he der Nummer bestraft.</p>
+
+            <p>Die Zeit wird im Minuten- und Sekundentakt gemessen, wer am schnellsten ist und am meisten Punkte hat, gewinnt! In [Einstellungen] kannst du die Anzahl der Bubbles ver&auml;ndern, um anzugeben. Dr&uuml;cke jetzt auf [Start] und geniesse ein reines HTML-, CSS- und Javascript-Meisterwerk der Extraklasse.  Ganz ehrlich.</p>
+
+            <p>Dieses Projekt entstand im Rahmen einer Zusatzleistung im Modul &#8222;Einf&uuml;hrung in die Medieninformatik&ldquo; der TU Dresden.</p>
+
+            <p>-------------------------------------------------------------------------------------------------------------------------------------</p>
+
+            <p>Welcome to Bubblecatch!</p>
+
+            <p>Click those fancy bubbles in ascending numbers away, brah! If you're successful, you get points in the amount of the number, if you fail however, you will be punished with minus points in the amount of the number.</p>
+
+            <p>The time will be measured in minutes and seconds. Whoever is the fastest and achieves most of the points, wins! In [Einstellungen] you get the chance to change the number of bubbles in order to show off!</p>
+
+            <p>Push [Start] and enjoy a real Masterpiece of HTML, CSS and Javascript. Seriously.</p>
+
+            <p>This project started as part of an extra for the subject &#8222;Einf&uuml;hrung in die Medieninformatik&ldquo; at TU Dresden.</p>
+          </span>
+
         </div>
 
         <div class="sansserif" id="footer">
