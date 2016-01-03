@@ -181,6 +181,7 @@ function settings() {
 
 function description() {
   reset();
+  document.getElementById('begin').innerHTML = 'Starten';
   document.getElementById('myCanvas').style.visibility = 'hidden';
   document.getElementById('desc').style.visibility = 'visible';
 }
