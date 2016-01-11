@@ -1,6 +1,5 @@
 /*
 things to do:
-1.prevent the blind trust in the user input
 3.add comments and popups for getting or losing points
 4.add more shapes to bubbles(squares(done), bees, flowers, circles(done))
 5. better results screen
@@ -36,17 +35,8 @@ function endofgame() {
       min = parseInt((end - start)/60000),
       sec = Math.round(((end - start)/1000-min*60)* 100) / 100;
 
-  document.getElementById('tim').innerHTML = min.toString()+ 'min ' +sec.toString() + 's';
-}
-
-function gamelogic(j) {
-  if(bubbleListe[j].wert == wertListe.min()) {
-    score += bubbleListe[j].wert;
-    bubbleListe.splice(j, 1);
-    wertListe.splice(j, 1);
-  } else {
-    score -= bubbleListe[j].wert;
-  }
+  document.getElementById('tim').innerHTML = min.toString()+ 'min '
+                                              + sec.toString() + 's';
 
   if(score < 0)
     document.getElementById('sco').style.color = 'red';
@@ -54,7 +44,29 @@ function gamelogic(j) {
     document.getElementById('sco').style.color = 'black';
   if(score > 0)
     document.getElementById('sco').style.color = 'green';
+
   document.getElementById('sco').innerHTML = score.toString();
+}
+
+function gamelogic(j) {
+  var points, history;
+  if(bubbleListe[j].wert == wertListe.min()) {
+    score += bubbleListe[j].wert;
+    points = bubbleListe[j].wert;
+    bubbleListe.splice(j, 1);
+    wertListe.splice(j, 1);
+  } else {
+    score -= bubbleListe[j].wert;
+    points = -bubbleListe[j].wert;
+  }
+
+  if(points < 0)
+    history = points.toString().fontcolor('red');
+  else
+    history = points.toString().fontcolor('green');
+
+  document.getElementById('sco').innerHTML = score.toString() + "   |     |   "
+                                            + history;
 
   if (bubbleListe == undefined || bubbleListe.length == 0)
     endofgame();
@@ -64,16 +76,26 @@ function beiClick(event) {
   var x = event.x,
       y = event.y;
 
-  x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-  y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+  x = event.clientX + document.body.scrollLeft
+      + document.documentElement.scrollLeft;
+  y = event.clientY + document.body.scrollTop
+      + document.documentElement.scrollTop;
 
   x -= c.offsetLeft;
   y -= c.offsetTop;
 
   for(j = 0; j < bubbleListe.length; j++) {
-    var hypo = Math.hypot(Math.abs(x-bubbleListe[j].x), Math.abs(y-bubbleListe[j].y));
-    if(hypo <= bubbleListe[j].radius)
-      gamelogic(j);
+    var hypo = Math.hypot(Math.abs(x-bubbleListe[j].x),
+                Math.abs(y-bubbleListe[j].y));
+
+    if(bubbleListe[j].s == 2) {
+      if(hypo <= bubbleListe[j].radius)
+        gamelogic(j);
+      } else {
+      if(hypo <= bubbleListe[j].radius+5)
+        gamelogic(j);
+      }
+
   }
 }
 
@@ -126,30 +148,19 @@ function draw() {
   }
 }
 
-function circle(j) {
-  ctx.fillStyle = bubbleListe[j].col;
-  ctx.beginPath();
-  ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
-  ctx.fill();
-}
-
 function shapes(j) {
   if(bubbleListe[j].s == 2) {
     ctx.fillStyle = bubbleListe[j].col;
     ctx.beginPath();
-    ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
+    ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,
+            2*Math.PI);
     ctx.fill();
   } else {
     ctx.fillStyle = bubbleListe[j].col;
     ctx.beginPath();
-    ctx.fillRect(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,bubbleListe[j].radius);
+    ctx.fillRect(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius+5,
+                  bubbleListe[j].radius+5);
   }
-}
-
-function square(j) {
-  ctx.fillStyle = bubbleListe[j].col;
-  ctx.beginPath();
-  ctx.fillRect(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,bubbleListe[j].radius);
 }
 
 function erzeugeEinzelneBubble() {
@@ -182,7 +193,14 @@ function init(num) {
 
 function bubblenumber() {
   var number = parseInt(document.getElementById('bubnumber').value);
-  init(number);
+
+  if(isNaN(number) || number == 0 || number > 1000) {                            //isNaN(number) returns true or false
+    alert("Error! Please enter an integer value from 1 to 1000\n"
+          + "Fehler! Bitte gebe eine ganze Zahl zwischen 1 bis 1000 ein.");
+    document.getElementById('bubnumber').value = 10;
+  } else {
+    init(number);
+  }
 }
 
 function settings() {
