@@ -63,7 +63,7 @@ function gamelogic(j) {
   if(points < 0)
     history = points.toString().fontcolor('red');
   else
-    history = points.toString().fontcolor('green');
+    history = ("+"+points.toString()).fontcolor('green');
 
   document.getElementById('sco').innerHTML = score.toString() + "   |     |   "
                                             + history;
@@ -95,7 +95,7 @@ function beiClick(event) {
       if(hypo <= bubbleListe[j].radius+5)
         gamelogic(j);
       }
-
+      
   }
 }
 
@@ -170,7 +170,6 @@ function erzeugeEinzelneBubble() {
       bubble = new Bubble(randomX, randomY, col);
   bubbleListe.push(bubble);
 }
-
 
 function erzeugeBubbleMenge(anzahl) {
   for (i = 0; i < anzahl; i++) {
