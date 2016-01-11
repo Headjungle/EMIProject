@@ -2,7 +2,7 @@
 things to do:
 1.prevent the blind trust in the user input
 3.add comments and popups for getting or losing points
-4.add more shapes to bubbles(squares, bees, flowers, circles(done))
+4.add more shapes to bubbles(squares(done), bees, flowers, circles(done))
 5. better results screen
 */
 var c = document.getElementById("myCanvas"),
@@ -95,6 +95,7 @@ function Bubble(x, y, col) {
   this.y = y;
   this.vx = (Math.random() * 2) + 1;
   this.vy = (Math.random() * 2) + 1;
+  this.s = Math.floor(Math.random() * (2 - 1 + 1)) + 2;
 }
 
 function update(j) {
@@ -112,7 +113,7 @@ function update(j) {
 function draw() {
   ctx.clearRect(0,0,c.width,c.height);
   for(j = 0; j < bubbleListe.length; j++ ) {
-    circle(j);
+    shapes(j);
 
     bubbleListe[j].x += bubbleListe[j].vx;
     bubbleListe[j].y += bubbleListe[j].vy;
@@ -132,14 +133,23 @@ function circle(j) {
   ctx.fill();
 }
 
+function shapes(j) {
+  if(bubbleListe[j].s == 2) {
+    ctx.fillStyle = bubbleListe[j].col;
+    ctx.beginPath();
+    ctx.arc(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,0,2*Math.PI);
+    ctx.fill();
+  } else {
+    ctx.fillStyle = bubbleListe[j].col;
+    ctx.beginPath();
+    ctx.fillRect(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,bubbleListe[j].radius);
+  }
+}
+
 function square(j) {
   ctx.fillStyle = bubbleListe[j].col;
   ctx.beginPath();
   ctx.fillRect(bubbleListe[j].x,bubbleListe[j].y,bubbleListe[j].radius,bubbleListe[j].radius);
-}
-
-function bee(j) {
-
 }
 
 function erzeugeEinzelneBubble() {
@@ -149,6 +159,7 @@ function erzeugeEinzelneBubble() {
       bubble = new Bubble(randomX, randomY, col);
   bubbleListe.push(bubble);
 }
+
 
 function erzeugeBubbleMenge(anzahl) {
   for (i = 0; i < anzahl; i++) {
