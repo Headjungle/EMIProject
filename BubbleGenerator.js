@@ -91,11 +91,12 @@ function beiClick(event) {
     if(bubbleListe[j].s == 2) {
       if(hypo <= bubbleListe[j].radius)
         gamelogic(j);
+
       } else {
       if(hypo <= bubbleListe[j].radius+5)
         gamelogic(j);
       }
-      
+
   }
 }
 
@@ -142,9 +143,17 @@ function draw() {
     update(j);
 
     ctx.fillStyle = 'black';
-    ctx.beginPath(); //ends the older .beginPath()
-    ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x, bubbleListe[j].y)
-    ctx.fill(); //contains .closePath()
+    ctx.beginPath();
+
+    if(bubbleListe[j].s == 2) {
+      ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x-bubbleListe[j].vx-3,
+                    bubbleListe[j].y-bubbleListe[j].vy+3);
+    } else {
+      ctx.fillText(bubbleListe[j].wert, bubbleListe[j].x-bubbleListe[j].vx+8,
+                    bubbleListe[j].y-bubbleListe[j].vy+14);
+    }                                                        //ends the older .beginPath()
+
+    ctx.fill();                                                                 //contains .closePath()
   }
 }
 
