@@ -93,7 +93,7 @@ function beiClick(event) {                                                      
         gamelogic(j);
 
       } else {
-      if(hypo <= bubbleListe[j].radius+5)
+      if(hypo <= bubbleListe[j].radius+7)
         gamelogic(j);
       }
 
@@ -116,8 +116,14 @@ function Bubble(x, y, col) {
 
   this.x = x;
   this.y = y;
-  this.vx = Math.floor(Math.random() * (2 + 2 + 1)) - 2;
-  this.vy =  Math.floor(Math.random() * (2 + 2 + 1)) - 2;
+  this.vx = 0;
+  this.vy = 0;
+
+  while(this.vx == 0 && this.vy == 0) {                                         //to exclude the movement 0, 0 from the random number generation
+    this.vx = Math.floor(Math.random() * (2 + 2 + 1)) - 2;
+    this.vy =  Math.floor(Math.random() * (2 + 2 + 1)) - 2;
+  }
+
   this.s = Math.floor(Math.random() * (2 - 1 + 1)) + 2;                         //to randomly generate the bubble shape(see line 160 for details)
 }
 
