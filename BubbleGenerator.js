@@ -116,8 +116,8 @@ function Bubble(x, y, col) {
 
   this.x = x;
   this.y = y;
-  this.vx = (Math.random() * 2) + 1;
-  this.vy = (Math.random() * 2) + 1;
+  this.vx = Math.floor(Math.random() * (2 + 2 + 1)) - 2;
+  this.vy =  Math.floor(Math.random() * (2 + 2 + 1)) - 2;
   this.s = Math.floor(Math.random() * (2 - 1 + 1)) + 2;                         //to randomly generate the bubble shape(see line 160 for details)
 }
 
